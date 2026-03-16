@@ -6,6 +6,8 @@
         "target": "developer"
     },
     "remoteEnv": {
+        // Forward the SSH agent socket so git/ssh auth works inside the container
+        "SSH_AUTH_SOCK": "/ssh-agent",
         // Allow X11 apps to run inside the container
         "DISPLAY": "${localEnv:DISPLAY}",
         // Put things that allow it in the persistent cache
@@ -63,6 +65,12 @@
             "source": "devcontainer-shared-cache",
             "target": "/cache",
             "type": "volume"
+        },
+        // Forward the host SSH agent so git push works inside the container
+        {
+            "source": "${localEnv:SSH_AUTH_SOCK}",
+            "target": "/ssh-agent",
+            "type": "bind"
         }
     ],
     // Mount the parent as /workspaces so we can pip install peers as editable
