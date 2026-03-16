@@ -19,6 +19,10 @@ ingress:
   annotations: {}
   #   nginx.ingress.kubernetes.io/rewrite-target: /
 
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+
 resources:
   limits:
     cpu: 500m
@@ -27,12 +31,32 @@ resources:
     cpu: 100m
     memory: 128Mi
 
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+# -- Liveness probe, if configured kubernetes will kill the pod and start a new one if failed consecutively.
+# This is automatically disabled when in debug mode.
 livenessProbe:
-  path: /healthz
-  initialDelaySeconds: 5
+  httpGet:
+    path: /healthz
+    port: http
+  failureThreshold: 3
   periodSeconds: 10
 
+# -- Readiness probe, if configured kubernetes will not route traffic to this pod if failed consecutively.
+# This could allow the service time to recover if it is being overwhelmed by traffic, but without the
+# to ability to load balance or scale up/outwards, upstream services will need to know to back off.
+# This is automatically disabled when in debug mode.
 readinessProbe:
-  path: /healthz
-  initialDelaySeconds: 5
+  httpGet:
+    path: /healthz
+    port: http
+  failureThreshold: 2
+  periodSeconds: 10
+
+# -- A more lenient livenessProbe to allow the service to start fully.
+# This is automatically disabled when in debug mode.
+startupProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  failureThreshold: 5
   periodSeconds: 10

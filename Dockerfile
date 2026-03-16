@@ -7,6 +7,14 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     graphviz \
     && apt-get dist-clean
 
+# Install helm for the dev container. This is the recommended
+# approach per the docs: https://helm.sh/docs/intro/install
+RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3; \
+    chmod 700 get_helm.sh; \
+    ./get_helm.sh; \
+    rm get_helm.sh
+RUN helm plugin install https://github.com/losisin/helm-values-schema-json.git --version 2.3.1
+
 # The build stage installs the context into the venv
 FROM developer AS build
 
@@ -26,10 +34,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM build AS debug
 
-
 # Set origin to use ssh
 RUN git remote set-url origin git@github.com:alexj9837/l-deploy.git
-
 
 # For this pod to understand finding user information from LDAP
 RUN apt update
@@ -58,8 +64,11 @@ FROM ubuntu:noble AS runtime
 COPY --from=build /python /python
 
 # Copy the environment, but not the source code
-COPY --from=build /app/.venv /app/.venv
+COPY --chown=1000:1000 --from=build /app/.venv /app/.venv
 ENV PATH=/app/.venv/bin:$PATH
+
+# Switch user
+USER ubuntu
 
 # change this entrypoint if it is not the same as the repo
 ENTRYPOINT ["l-deploy"]
