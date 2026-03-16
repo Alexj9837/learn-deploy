@@ -1,7 +1,7 @@
 image:
   repository: ghcr.io/alexj9837/l-deploy
   # tag defaults to Chart.yaml appVersion if not set
-  tag: ""
+  tag: "latest"
   pullPolicy: IfNotPresent
 
 replicaCount: 1
