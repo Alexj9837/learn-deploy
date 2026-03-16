@@ -1,0 +1,17 @@
+# Changes here will be overwritten by Copier
+_commit: 5.0.2
+_src_path: https://github.com/DiamondLightSource/python-copier-template.git
+author_email: alexjanusz123@gmail.com
+author_name: Alex Janusz
+description: learning to deploy
+distribution_name: l-deploy
+docker: true
+docker_debug: true
+docs_type: README
+git_platform: github.com
+github_org: alexj9837
+package_name: first_step
+pypi: false
+repo_name: l-deploy
+strict_typing: true
+type_checker: pyright

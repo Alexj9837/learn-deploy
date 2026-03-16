@@ -1,0 +1,8 @@
+apiVersion: v2
+name: first-step
+description: A simple FastAPI service for learning to deploy on Pollux
+type: application
+# This version is replaced by CI: helm package --version ${GITHUB_REF##*/}
+version: 0.1.0
+# appVersion controls the default image tag
+appVersion: "latest"
