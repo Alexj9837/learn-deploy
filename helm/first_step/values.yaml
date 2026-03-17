@@ -14,7 +14,7 @@ service:
 ingress:
   enabled: true
   className: nginx
-  host: "first-step.ret43730.pollux.diamond.ac.uk"
+  host: "ret43730.diamond.ac.uk"
   # e.g. first-step.ret43730.pollux.diamond.ac.uk
   annotations: {}
   #   nginx.ingress.kubernetes.io/rewrite-target: /
