@@ -18,6 +18,10 @@ ingress:
   # e.g. first-step.ret43730.pollux.diamond.ac.uk
   annotations: {}
   #   nginx.ingress.kubernetes.io/rewrite-target: /
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
 
 securityContext:
   runAsNonRoot: true
