@@ -12,9 +12,9 @@ service:
   targetPort: 8000
 
 ingress:
-  enabled: false
-  # className: nginx
-  host: ""
+  enabled: true
+  className: nginx
+  host: "first-step.ret43730.pollux.diamond.ac.uk"
   # e.g. first-step.ret43730.pollux.diamond.ac.uk
   annotations: {}
   #   nginx.ingress.kubernetes.io/rewrite-target: /
